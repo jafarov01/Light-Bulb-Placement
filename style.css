@@ -1,4 +1,4 @@
-*{
+* {
     padding: 0;
     margin: 0;
     user-select: none;
@@ -18,47 +18,46 @@
     height: 100%;
 }
 
-#buttonStart{
-    width:50px;
+#buttonStart {
+    width: 50px;
     height: 50px;
     font-size: 20px;
 }
 
-#divCustomGrid{
-    display:none;
+#divCustomGrid {
+    display: none;
     flex-direction: column;
 }
 
-.lamp{
-    width:60px;
-    height:60px;
+.lamp {
+    width: 60px;
+    height: 60px;
 }
 
-#formSize
-{
+#formSize {
     padding: 1em;
     display: flex;
     justify-content: center;
 }
 
-#divEditCustomGrid{
+#divEditCustomGrid {
     padding: 20px;
-    display:flex;
+    display: flex;
     flex-direction: row-reverse;
     justify-content: space-around;
     gap: 2em;
 }
 
-#divGridElements{
-    display:flex;
+#divGridElements {
+    display: flex;
     flex-direction: column;
-    width:fit-content;
+    width: fit-content;
     height: fit-content;
     gap: 3em;
 }
 
-.elements{
-    display:flex;
+.elements {
+    display: flex;
     font-size: 2em;
     justify-content: center;
     align-items: center;
@@ -77,10 +76,10 @@
     height: 30px;
     margin: 0 auto;
     margin-top: 10px;
-    font-size:20px
+    font-size: 20px
 }
 
-label{
+label {
     font-size: 20px;
 }
 
@@ -106,15 +105,15 @@ label{
 
 #grid {
     display: grid;
-    grid-template-columns: repeat(1,1fr);
+    grid-template-columns: repeat(1, 1fr);
 }
 
-.row{
+.row {
     display: flex;
 }
 
 .cell {
-    display:flex;
+    display: flex;
     border: rgb(183, 0, 255) 1.5px solid;
     width: 40px;
     height: 40px;
@@ -124,7 +123,7 @@ label{
     justify-content: center;
 }
 
-.cell-hover{
+.cell-hover {
     background-color: black;
 }
 
@@ -134,13 +133,30 @@ body {
     width: 100vw;
 }
 
-ul{
+ul {
     padding: 0;
     display: flex;
     flex-direction: column;
     gap: 1em;
 }
 
-li{
+li {
     list-style: none;
+}
+
+#tableScoreBoard * {
+    border: 1px solid black;
+    width:fit-content;
+    padding: 20px;
+    font-size: 18px;
+}
+
+th{
+    color:purple;
+    font-weight: bolder;
+}
+
+td{
+    color:darkslategrey;
+    font-weight: bold;
 }

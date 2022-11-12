@@ -18,8 +18,10 @@ const puzzle_error = new Audio('puzzle_error.mp3');
 const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
 let scoreBoard = [...savedScoreBoard];
 
+
+
 const easyGrid =
-[
+    [
         ["", "", "", "1", "", "", ""],
         ["", "0", "", "", "", "2", ""],
         ["", "", "", "", "", "", ""],
@@ -63,22 +65,32 @@ let timeElapsed;
 let numLamps = 0;
 let isPaused = false;
 
-
-
-
 function saveGameData(playerName, level, timeElapsed) {
     let gameData = {
         "playerName": playerName,
         "level": level,
         "timeElapsed": timeElapsed
+
     }
 
-    scoreBoard.push(gameData);
+    let update = false;
 
-    saveGameData(playerName, level, timeElapsed);
-    
+    for (let i = 0; i < scoreBoard.length; i++) {
+        let score = scoreBoard[i];
+
+        if (score.playerName === gameData.playerName && score.level === gameData.level) {
+            score.timeElapsed = gameData.timeElapsed;
+            update = true;
+        }
+    }
+
+    if (!update) scoreBoard.push(gameData);
+
+    console.log("storage:" , scoreBoard);
+
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
 }
+
 
 function loadPlayPage() {
     divPlayPage.style.display = "flex";
@@ -90,6 +102,7 @@ function loadPlayPage() {
 
     h3Time.innerHTML = getElapsedTime(startTime);
     h3NumLumps.innerHTML = `Bulps Used: ${numLamps}`;
+    isPaused = false;
     setInterval(() => {
         timeElapsed = h3Time.innerHTML = getElapsedTime(startTime);
     }, 1000);
@@ -170,8 +183,7 @@ function play() {
     })
 }
 
-function updateAfterSolved(isWin)
-{
+function updateAfterSolved(isWin) {
     if (isWin) {
         isPaused = true;
         h1WinMessage.innerHTML = "SOLVED!";
@@ -182,6 +194,29 @@ function updateAfterSolved(isWin)
         if (currentGrid == mediumGrid) level = "Medium";
         if (currentGrid == hardGrid) level = "Hard";
         //if (currentGrid == customGrid) level = "Custom Difficulty";
+
+        saveGameData(playerName, level, timeElapsed);
+
+        let buttonRestart = document.createElement("button");
+        buttonRestart.innerHTML = "RESTART THE GAME";
+        divPlayPage.appendChild(buttonRestart);
+        buttonRestart.addEventListener("click", (e)=>{
+            
+            //resetting game state
+            startTime = new Date();
+
+            //remove all children
+            let rows  = document.querySelectorAll(".row");
+
+            for (let i = 0 ; i < rows.length; i++)
+            {
+                rows[i].remove();
+            }
+
+            loadPlayPage();
+
+            buttonRestart.remove();
+        })
     }
     else {
         h1WinMessage.innerHTML = "";
@@ -229,29 +264,54 @@ buttonStart.addEventListener("click", (e) => {
     }
 })
 
-document.addEventListener("DOMContentLoaded", () =>{
-    console.log("scoreBoardHTML ucun:", scoreBoard);
-    
-    scoreBoard.forEach((score) => {
-        let divScore = document.createElement("div");
-        divScore.id = score.playerName;
-        
-        let h3PlayerName = document.createElement("h3");
-        h3PlayerName.innerHTML = score.playerName;
-        let h3Level = document.createElement("h3");
-        h3Level.innerHTML = score.level;
-        let h3Time = document.createElement("h3");
-        h3Time.innerHTML = score.timeElapsed;
-        
-        divScore.appendChild(h3PlayerName);
-        divScore.appendChild(h3Level);
-        divScore.appendChild(h3Time);
-        
-        divScoreBoard.appendChild(divScore);
-        
-        console.log("html score: ", divScore);
-    })
+document.addEventListener("DOMContentLoaded", () => {
+
+    let table = document.createElement("table");
+    table.id = "tableScoreBoard";
+
+    let caption = document.createElement("caption");
+    caption.innerHTML = "SCORE BOARD";
+
+    let tr = document.createElement("tr");
+
+    let th = document.createElement("th");
+    th.innerHTML = "Player Name";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.innerHTML = "Level";
+    tr.appendChild(th);
+
+    th = document.createElement("th");
+    th.innerHTML = "Time Elapsed";
+    tr.appendChild(th);
+
+    table.appendChild(tr);
+
+    for (let i = 0; i < scoreBoard.length; i++) {
+        let score = scoreBoard[i];
+
+        let tr = document.createElement("tr");
+        tr.id = score.playerName;
+
+        let td = document.createElement("td");
+        td.innerHTML = score.playerName;
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = score.level;
+        tr.appendChild(td);
+
+        td = document.createElement("td");
+        td.innerHTML = score.timeElapsed;
+        tr.appendChild(td);
+
+        table.appendChild(tr);
+    }
+
+    divScoreBoard.appendChild(table);
 })
+
 
 
 function getElapsedTime(startTime) {

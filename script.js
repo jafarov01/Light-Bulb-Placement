@@ -75,8 +75,8 @@ function saveGameData(playerName, level, timeElapsed) {
 
     scoreBoard.push(gameData);
 
-    console.log("scoreBoardArr:", scoreBoard);
-
+    saveGameData(playerName, level, timeElapsed);
+    
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
 }
 
@@ -182,11 +182,6 @@ function updateAfterSolved(isWin)
         if (currentGrid == mediumGrid) level = "Medium";
         if (currentGrid == hardGrid) level = "Hard";
         //if (currentGrid == customGrid) level = "Custom Difficulty";
-
-        saveGameData(playerName, level, timeElapsed);
-
-        
-
     }
     else {
         h1WinMessage.innerHTML = "";
@@ -235,7 +230,27 @@ buttonStart.addEventListener("click", (e) => {
 })
 
 document.addEventListener("DOMContentLoaded", () =>{
-    console.log("storage: ", savedScoreBoard);
+    console.log("scoreBoardHTML ucun:", scoreBoard);
+    
+    scoreBoard.forEach((score) => {
+        let divScore = document.createElement("div");
+        divScore.id = score.playerName;
+        
+        let h3PlayerName = document.createElement("h3");
+        h3PlayerName.innerHTML = score.playerName;
+        let h3Level = document.createElement("h3");
+        h3Level.innerHTML = score.level;
+        let h3Time = document.createElement("h3");
+        h3Time.innerHTML = score.timeElapsed;
+        
+        divScore.appendChild(h3PlayerName);
+        divScore.appendChild(h3Level);
+        divScore.appendChild(h3Time);
+        
+        divScoreBoard.appendChild(divScore);
+        
+        console.log("html score: ", divScore);
+    })
 })
 
 

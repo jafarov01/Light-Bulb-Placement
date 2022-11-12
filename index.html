@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- START GAME LOGIN PAGE -->
+    <div id="divStartPage">
+        <img src="kingqueen.jpg" id="imgStartPage">
+
+        <form>
+            <label for="inputName">NAME</label>
+            <input id="inputName" type="text" placeholder="Enter your name">
+
+            <ul>
+                <li>
+                    <input type="radio" id="easy" name="difficulty" value="EASY">
+                    <label for="easy">EASY</label>
+                </li>
+                <li>
+                    <input type="radio" id="medium" name="difficulty" value="MEDIUM">
+                    <label for="medium">MEDIUM</label>
+                </li>
+                <li>
+                    <input type="radio" id="hard" name="difficulty" value="HARD">
+                    <label for="hard">HARD</label>
+                </li>
+                <li>
+                    <input type="radio" id="custom" name="difficulty" value="CUSTOM">
+                    <label for="custom">CUSTOM</label>
+                </li>
+            </ul>
+            <button id="buttonStart">START</button>
+        </form>
+
+        <div id="divScoreBoard">
+            <h1>Score Board</h1>
+
+            
+
+        </div>
+    </div>
+
+    <!-- CUSTOM MAP PAGE -->
+
+    <div id="divCustomGrid">
+        <form id="formSize">
+            <label for="inputGridSize">Grid Size [0 10]</label>
+            <input type="range" id="inputGridSize" name="inputGridSize" min="0" max="10" value="0"
+                placeholder="Enter the size of the grid">
+            <button id="buttonSetGrid">SET</button>
+        </form>
+
+        <div id="divEditCustomGrid">
+            <div id="divCustomGridShowArea">
+
+            </div>
+
+            <div id="divGridElements">
+                <div class="elements" data-type="stone"></div>
+                <div class="elements" data-type="number0">0</div>
+                <div class="elements" data-type="number1">1</div>
+                <div class="elements" data-type="number2">2</div>
+                <div class="elements" data-type="number3">3</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYGROUND PAGE -->
+
+    <div id="divPlayPage">
+        <div id="grid"></div>
+        <div id="gameInfo">
+            <h2 id="h2PlayerName"></h2>
+            <h3 id="h3Time"></h3>
+            <h3 id="h3NumLumps"></h3>
+            <h1 id="h1WinMessage"></h1>
+        </div>
+    </div>
+</body>
+
+</html>

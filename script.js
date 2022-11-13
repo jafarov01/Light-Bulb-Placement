@@ -3,10 +3,11 @@ const body = document.querySelector("body");
 const divStartPage = document.querySelector("#divStartPage");
 const buttonStart = document.querySelector("#buttonStart");
 const divPlayPage = document.querySelector("#divPlayPage");
+const divCustomGridPage = document.querySelector("#divCustomGridPage");
 const divCustomGrid = document.querySelector("#divCustomGrid");
+const divEditCustomGrid = document.querySelector("#divEditCustomGrid");
 const inputGridSize = document.querySelector("#inputGridSize")
 const buttonSetGrid = document.querySelector("#buttonSetGrid");
-const divCustomGridShowArea = document.querySelector("#divCustomGridShowArea");
 const elements = document.getElementsByClassName("elements");
 const gridContainer = document.querySelector("#grid");
 const h2PlayerName = document.querySelector("#h2PlayerName");
@@ -21,7 +22,7 @@ const IMG = document.querySelector("#imgStartPage");
 const divChangeDifficulty = document.querySelector("#divChangeDifficulty");
 const buttonChangeDiffStart = document.querySelector("#buttonChangeDiffStart");
 let scoreBoard = [...savedScoreBoard];
-
+const GAME_INFO = document.querySelector("#gameInfo");
 const easyGrid =
     [
         ["", "", "", "1", "", "", ""],
@@ -60,7 +61,7 @@ const hardGrid =
 
 
 let currentGrid;
-let currentContainer = gridContainer;
+let currentContainer;
 
 let playerName;
 let startTime, endTime;
@@ -104,7 +105,7 @@ function loadPlayPage() {
     h2PlayerName.innerHTML = playerName;
 
     h3Time.innerHTML = getElapsedTime(startTime);
-    h3NumLumps.innerHTML = `Bulps Used: ${numLamps}`;
+    h3NumLumps.innerHTML = `BULBS USED: ${numLamps}`;
     isPaused = false;
     setInterval(() => {
         timeElapsed = h3Time.innerHTML = getElapsedTime(startTime);
@@ -207,12 +208,14 @@ function updateAfterSolved() {
     saveGameData(playerName, level, timeElapsed);
 
     let buttonRestart = document.createElement("button");
+    buttonRestart.id = "restart_btn";
     buttonRestart.innerHTML = "RESTART THE GAME IN THE SAME DIFFICULTY LEVEL";
-    divPlayPage.appendChild(buttonRestart);
+    GAME_INFO.appendChild(buttonRestart);
 
     let buttonChangeDiff = document.createElement("button");
+    buttonChangeDiff.id = "change_btn";
     buttonChangeDiff.innerHTML = "CHANGE THE DIFFICULTY LEVEL";
-    divPlayPage.appendChild(buttonChangeDiff);
+    GAME_INFO.appendChild(buttonChangeDiff);
 
 
     buttonRestart.addEventListener("click", (e) => {
@@ -306,23 +309,27 @@ buttonStart.addEventListener("click", (e) => {
 
             divStartPage.style.display = "none";
             currentGrid = easyGrid;
+            currentContainer = gridContainer;
             loadPlayPage();
         }
         else if (document.getElementById("medium").checked) {
             divStartPage.style.display = "none";
             currentGrid = mediumGrid;
+            currentContainer = gridContainer;
             loadPlayPage();
         }
         else if (document.getElementById("hard").checked) {
             divStartPage.style.display = "none";
             currentGrid = hardGrid;
+            currentContainer = gridContainer;
             loadPlayPage();
         }
         else if (document.getElementById("custom").checked) {
             currentContainer = divCustomGrid;
             divStartPage.style.display = "none";
-            divCustomGrid.style.display = "flex";
+            divCustomGridPage.style.display = "flex";
             createCustomGrid();
+            loadPlayPage();
         }
     }
     else {
@@ -419,8 +426,9 @@ function getElapsedTime(startTime) {
 }
 
 function renderBoard() {
-    gridContainer.style.gridTemplateRows = `repeat(${currentGrid.length},1fr)`;
-
+    currentContainer.style.gridTemplateRows = `repeat(${currentGrid.length},1fr)`;
+    console.log("currentGrid.length: ", currentGrid.length);
+    console.log("container: ", currentContainer);
     for (let i = 0; i < currentGrid.length; i++) {
         var row = document.createElement("div");
 
@@ -459,7 +467,7 @@ function renderBoard() {
             column.id = `${i}${j}`;
             row.appendChild(column);
         }
-        gridContainer.appendChild(row);
+        currentContainer.appendChild(row);
     }
 
 }
@@ -683,11 +691,11 @@ let choosenElement;
 let customGrid;
 
 function createCustomGrid() {
-    let flag = true;
     inputGridSize.addEventListener("input", (e) => {
 
-        if (divCustomGrid != undefined) divCustomGrid.remove();
+        if (document.querySelector("#divCustomGrid") != undefined) document.querySelector("#divCustomGrid").remove();
 
+        //creating an array of the input grid size
         let gridSize = parseInt(inputGridSize.value);
         customGrid = [];
         customGrid = new Array(gridSize);
@@ -695,60 +703,80 @@ function createCustomGrid() {
             customGrid[i] = new Array(gridSize).fill("");
         }
 
+        //assigning currentGrid array
         currentGrid = customGrid;
 
+        let divCustomGrid = document.createElement("div");
+        divCustomGrid.style.display = "flex";
         divCustomGrid = document.createElement("div");
         divCustomGrid.id = "divCustomGrid";
-        divCustomGridShowArea.appendChild(divCustomGrid);
+        divEditCustomGrid.appendChild(divCustomGrid);
+        
 
         for (let i = 0; i < elements.length; i++) {
             let element = elements[i];
 
             element.addEventListener("click", () => {
                 choosenElement = element;
-                console.log("STONE CLICKED");
             })
-
         }
+        currentContainer = divCustomGrid;
         renderBoard();
         changeElement();
     })
 
     buttonSetGrid.addEventListener("click", () => {
-        //..
+        divCustomGridPage.style.display = "none";
+        divPlayPage.style.display = "flex";
+        let readyGrid = customGrid;
+        currentGrid = readyGrid;
+
+        console.log(gridContainer);
+
+        currentContainer.children().forEach(child => {
+            gridContainer.appendChild(child);
+        })
+
+        console.log(gridContainer);
     })
 }
 
 function changeElement() {
-
-    gridContainer.forEach((cell), cell.addEventListener("click"), () => {
-        if (choosenElement.dataset.type === "stone") {
-            cell.style.backgroundColor = "black";
-            cell.dataset.type = "stone";
-            console.log("HERE");
-        }
-        else if (choosenElement.dataset.type === "number0") {
-            cell.style.backgroundColor = "black";
-            cell.dataset.type = "number";
-            cell.innerHTML = "0";
-        }
-        else if (choosenElement.dataset.type === "number1") {
-            cell.style.backgroundColor = "black";
-            cell.dataset.type = "number";
-            cell.innerHTML = "1";
-        }
-        else if (choosenElement.dataset.type === "number2") {
-            cell.style.backgroundColor = "black";
-            cell.dataset.type = "number";
-            cell.innerHTML = "2";
-        }
-        else if (choosenElement.dataset.type === "number3") {
-            cell.style.backgroundColor = "black";
-            cell.dataset.type = "number";
-            cell.innerHTML = "3";
-        }
-
-        renderBoard();
+    const cells = document.querySelectorAll('.cell');
+    console.log("container: ", currentContainer);
+    cells.forEach((cell) => {
+        cell.addEventListener("click", () => {
+            if (choosenElement.dataset.type === "stone") {
+                cell.style.backgroundColor = "black";
+                cell.dataset.type = "stone";
+                console.log("HERE");
+            }
+            else if (choosenElement.dataset.type === "number0") {
+                cell.style.backgroundColor = "black";
+                cell.dataset.type = "number";
+                cell.innerHTML = "0";
+            }
+            else if (choosenElement.dataset.type === "number1") {
+                cell.style.backgroundColor = "black";
+                cell.dataset.type = "number";
+                cell.innerHTML = "1";
+            }
+            else if (choosenElement.dataset.type === "number2") {
+                cell.style.backgroundColor = "black";
+                cell.dataset.type = "number";
+                cell.innerHTML = "2";
+            }
+            else if (choosenElement.dataset.type === "number3") {
+                cell.style.backgroundColor = "black";
+                cell.dataset.type = "number";
+                cell.innerHTML = "3";
+            }
+            else if (choosenElement.dataset.type === "empty") {
+                cell.style.backgroundColor = "white";
+                cell.dataset.type = "blank";
+                cell.innerHTML = "";
+            }
+        })
     })
 
 }

@@ -53,7 +53,7 @@
 
     <!-- CUSTOM MAP PAGE -->
 
-    <div id="divCustomGrid">
+    <div id="divCustomGridPage">
         <form id="formSize">
             <label for="inputGridSize">Grid Size [0 10]</label>
             <input type="range" id="inputGridSize" name="inputGridSize" min="0" max="10" value="0"
@@ -62,16 +62,13 @@
         </form>
 
         <div id="divEditCustomGrid">
-            <div id="divCustomGrid">
-
-            </div>
-
             <div id="divGridElements">
                 <div class="elements" data-type="stone"></div>
                 <div class="elements" data-type="number0">0</div>
                 <div class="elements" data-type="number1">1</div>
                 <div class="elements" data-type="number2">2</div>
                 <div class="elements" data-type="number3">3</div>
+                <div class="elements" id="empty" data-type="empty"></div>
             </div>
         </div>
     </div>

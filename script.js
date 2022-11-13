@@ -16,28 +16,11 @@ const h1WinMessage = document.querySelector("#h1WinMessage");
 const divScoreBoard = document.querySelector("#divScoreBoard");
 const puzzle_error = new Audio('./sounds/sound.mp3');
 const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
-let scoreBoard = [...savedScoreBoard];
-/*
-BY MURAD
-*/
 const score_btn = document.querySelector(".score_board");
 const IMG = document.querySelector("#imgStartPage");
-let isScore = false;
-score_btn.addEventListener("click", () => {
-    if(!isScore)
-    {
-        divScoreBoard.style.display = "block";
-        IMG.style.display = "none";
-        isScore = true;
-    }else{
-        divScoreBoard.style.display = "none";
-        IMG.style.display = "block";
-        isScore = false;
-    }
-})
-/*
-BY MURAD
-*/
+const divChangeDifficulty = document.querySelector("#divChangeDifficulty");
+const buttonChangeDiffStart = document.querySelector("#buttonChangeDiffStart");
+let scoreBoard = [...savedScoreBoard];
 
 const easyGrid =
     [
@@ -83,6 +66,7 @@ let startTime, endTime;
 let timeElapsed;
 let numLamps = 0;
 let isPaused = false;
+let isScore = false;
 
 function saveGameData(playerName, level, timeElapsed) {
     let gameData = {
@@ -105,11 +89,10 @@ function saveGameData(playerName, level, timeElapsed) {
 
     if (!update) scoreBoard.push(gameData);
 
-    console.log("storage:" , scoreBoard);
+    console.log("storage:", scoreBoard);
 
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
 }
-
 
 function loadPlayPage() {
     divPlayPage.style.display = "flex";
@@ -217,25 +200,88 @@ function updateAfterSolved(isWin) {
         saveGameData(playerName, level, timeElapsed);
 
         let buttonRestart = document.createElement("button");
-        buttonRestart.innerHTML = "RESTART THE GAME";
+        buttonRestart.innerHTML = "RESTART THE GAME IN THE SAME DIFFICULTY LEVEL";
         divPlayPage.appendChild(buttonRestart);
-        buttonRestart.addEventListener("click", (e)=>{
-            
+
+        let buttonChangeDiff = document.createElement("button");
+        buttonChangeDiff.innerHTML = "CHANGE THE DIFFICULTY LEVEL";
+        divPlayPage.appendChild(buttonChangeDiff);
+
+
+        buttonRestart.addEventListener("click", (e) => {
+
             //resetting game state
             numLamps = 0;
             startTime = new Date();
 
             //remove all children
-            let rows  = document.querySelectorAll(".row");
+            let rows = document.querySelectorAll(".row");
 
-            for (let i = 0 ; i < rows.length; i++)
-            {
+            for (let i = 0; i < rows.length; i++) {
                 rows[i].remove();
             }
 
             loadPlayPage();
+            buttonChangeDiff.remove()
+            buttonRestart.remove();
+        })
+
+        buttonChangeDiff.addEventListener("click", (e) => {
+            divPlayPage.style.display = "none";
+            divChangeDifficulty.style.display = "flex";
+
+
+            //resetting game state
+            numLamps = 0;
+            startTime = new Date();
+
+            //remove all children
+            let rows = document.querySelectorAll(".row");
+
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].remove();
+            }
 
             buttonRestart.remove();
+            buttonChangeDiff.remove();
+
+            buttonChangeDiffStart.addEventListener("click", (e) => {
+                e.preventDefault();
+
+
+                if (document.querySelector(".h3AlertDiff") != undefined) {
+                    document.querySelector(".h3AlertDiff").remove();
+                }
+
+                if (document.getElementById("easyDiff").checked) {
+
+                    currentGrid = easyGrid;
+                    divChangeDifficulty.style.display = "none";
+                    loadPlayPage();
+                }
+                else if (document.getElementById("mediumDiff").checked) {
+                    currentGrid = mediumGrid;
+                    divChangeDifficulty.style.display = "none";
+                    loadPlayPage();
+                }
+                else if (document.getElementById("hardDiff").checked) {
+                    currentGrid = hardGrid;
+                    divChangeDifficulty.style.display = "none";
+                    loadPlayPage();
+                }
+                else if (document.getElementById("customDiff").checked) {
+                    divChangeDifficulty.style.display = "none";
+                    createCustomGrid();
+                }
+                else {
+                    let hh3AlertDiff3Alert = document.createElement("h3");
+                    h3AlertDiff.innerHTML = "Please, fill the given form to start.";
+                    h3AlertDiff.style.color = "red";
+                    h3AlertDiff.className = "h3AlertDiff"
+                    divStartPage.appendChild(h3AlertDiff);
+                }
+
+            })
         })
     }
     else {
@@ -617,6 +663,18 @@ function reColor() {
         }
     })
 }
+
+score_btn.addEventListener("click", () => {
+    if (!isScore) {
+        divScoreBoard.style.display = "block";
+        IMG.style.display = "none";
+        isScore = true;
+    } else {
+        divScoreBoard.style.display = "none";
+        IMG.style.display = "block";
+        isScore = false;
+    }
+})
 
 /*
 let choosenElement;

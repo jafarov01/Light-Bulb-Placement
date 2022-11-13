@@ -22,7 +22,7 @@
             <img src="./pictures/king.jpg" id="imgStartPage">
         </div>
 
-        <form>
+        <form id="formStart">
             <div class="input_name">
                 <label for="inputName">NAME</label>
                 <input id="inputName" type="text" placeholder="Enter your name">
@@ -86,6 +86,30 @@
             <h3 id="h3NumLumps"></h3>
             <h1 id="h1WinMessage"></h1>
         </div>
+    </div>
+
+    <div id="divChangeDifficulty">
+        <form id="formDifficulty">
+            <ul>
+                <li>
+                    <label for="easyDiff">EASY</label>
+                    <input type="radio" id="easyDiff" name="difficulty" value="EASY">
+                </li>
+                <li>
+                    <label for="mediumDiff">MEDIUM</label>
+                    <input type="radio" id="mediumDiff" name="difficulty" value="MEDIUM">
+                </li>
+                <li>
+                    <label for="hardDiff">HARD</label>
+                    <input type="radio" id="hardDiff" name="difficulty" value="HARD">
+                </li>
+                <li>
+                    <label for="customDiff">CUSTOM</label>
+                    <input type="radio" id="customDiff" name="difficulty" value="CUSTOM">
+                </li>
+            </ul>
+            <button id="buttonChangeDiffStart">START</button>
+        </form>
     </div>
 </body>
 

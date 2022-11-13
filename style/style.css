@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    user-select: none;
+    -webkit-user-drag: none;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body {
+    background-color: rgb(196, 167, 3);
+    height: 100vh;
+    width: 100vw;
+}
+
+#divStartPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#imgStartPage {
+    display: block;
+    width: 40%;
+    border-radius: 15px;
+    min-width: 500px;
+    height: 440px;
+
+}
+
+.picture{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 1em;
+    text-align: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 30%;
+    height: 40%;
+    padding: 2em;
+    min-width: fit-content;
+}
+.input_name
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 1.5em;
+    width: 80%;
+    min-width: fit-content;
+}
+#inputName{
+    height: 3em;
+    border-radius: 15px;
+    border: 0;
+    padding: 0 1em;
+}
+
+
+ul {
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    width: 100%;
+    min-width: fit-content;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+    font-size: 1.1em;
+    width: 250px;
+    padding: 0.5em;
+    min-width: 100px;
+}
+li input{
+    transform: scale(2);
+}
+input[type='radio']:checked:after {
+    width: 10px;
+    height: 10px;
+    border-radius: 15px;
+    background-color: #ffa500;
+    content: 'x';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+
+#buttonStart {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    background-color: rgb(163, 81, 81);
+}
+
+#buttonStart:hover{
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.score_board{
+    width: fit-content;
+    padding: 0.5em;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.842);
+    color: aliceblue;
+
+}
+
+#divScoreBoard{
+    display: none;
+    height: 440px;
+    overflow: scroll;
+}
+
+#divScoreBoard::-webkit-scrollbar {
+    display: none;
+}
+
+/* sldalskdajsldjaslkdlkasdklsalkd */
+
+
+#divCustomGrid {
+    display: none;
+    flex-direction: column;
+}
+
+.lamp {
+    width: 60px;
+    height: 60px;
+}
+
+#formSize {
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+#divEditCustomGrid {
+    padding: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    gap: 2em;
+}
+
+#divGridElements {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    gap: 3em;
+}
+
+.elements {
+    display: flex;
+    font-size: 2em;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    color: white;
+    background-color: black;
+}
+
+.elements:active {
+    box-shadow: 5px 5px 8px red;
+}
+
+/* #inputName {
+    width: 150px;
+    height: 30px;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-size: 20px
+} */
+
+/* label {
+    font-size: 20px;
+} */
+
+#buttonStart {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+#formStartPage {
+    display: flex;
+    flex-direction: column;
+}
+
+#divPlayPage {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    display: flex;
+    border: rgb(183, 0, 255) 1.5px solid;
+    width: 40px;
+    height: 40px;
+    padding: 20px;
+    font-size: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell-hover {
+    background-color: black;
+}
+
+
+
+#tableScoreBoard * {
+    border: 1px solid black;
+    width:fit-content;
+    padding: 20px;
+    font-size: 18px;
+}
+
+th{
+    color:purple;
+    font-weight: bolder;
+}
+
+td{
+    color:darkslategrey;
+    font-weight: bold;
+}

@@ -14,11 +14,30 @@ const h3Time = document.querySelector("#h3Time");
 const h3NumLumps = document.querySelector("#h3NumLumps");
 const h1WinMessage = document.querySelector("#h1WinMessage");
 const divScoreBoard = document.querySelector("#divScoreBoard");
-const puzzle_error = new Audio('puzzle_error.mp3');
+const puzzle_error = new Audio('./sounds/sound.mp3');
 const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
 let scoreBoard = [...savedScoreBoard];
-
-
+/*
+BY MURAD
+*/
+const score_btn = document.querySelector(".score_board");
+const IMG = document.querySelector("#imgStartPage");
+let isScore = false;
+score_btn.addEventListener("click", () => {
+    if(!isScore)
+    {
+        divScoreBoard.style.display = "block";
+        IMG.style.display = "none";
+        isScore = true;
+    }else{
+        divScoreBoard.style.display = "none";
+        IMG.style.display = "block";
+        isScore = false;
+    }
+})
+/*
+BY MURAD
+*/
 
 const easyGrid =
     [
@@ -151,7 +170,7 @@ function play() {
                 }
                 else {
                     let lampImg = document.createElement("img");
-                    lampImg.src = "lamp.png";
+                    lampImg.src = "./pictures/lamp.png";
                     lampImg.className = "lamp";
                     cell.appendChild(lampImg);
                     cell.dataset.isLampPut = "1"; //true
@@ -203,6 +222,7 @@ function updateAfterSolved(isWin) {
         buttonRestart.addEventListener("click", (e)=>{
             
             //resetting game state
+            numLamps = 0;
             startTime = new Date();
 
             //remove all children

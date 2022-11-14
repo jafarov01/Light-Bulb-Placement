@@ -4,7 +4,7 @@ const divStartPage = document.querySelector("#divStartPage");
 const buttonStart = document.querySelector("#buttonStart");
 const divPlayPage = document.querySelector("#divPlayPage");
 const divCustomGridPage = document.querySelector("#divCustomGridPage");
-const divCustomGrid = document.querySelector("#divCustomGrid");
+let divCustomGrid;
 const divEditCustomGrid = document.querySelector("#divEditCustomGrid");
 const inputGridSize = document.querySelector("#inputGridSize")
 const buttonSetGrid = document.querySelector("#buttonSetGrid");
@@ -17,11 +17,15 @@ const h1WinMessage = document.querySelector("#h1WinMessage");
 const divScoreBoard = document.querySelector("#divScoreBoard");
 const puzzle_error = new Audio('./sounds/sound.mp3');
 const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
+const savedCustomMaps = JSON.parse(localStorage.getItem("savedMaps")) ?? [];
 const score_btn = document.querySelector(".score_board");
+const custom_btn = document.querySelector(".custom_maps");
 const IMG = document.querySelector("#imgStartPage");
 const divChangeDifficulty = document.querySelector("#divChangeDifficulty");
 const buttonChangeDiffStart = document.querySelector("#buttonChangeDiffStart");
+const divCustomMaps = document.querySelector("#divCustomMaps");
 let scoreBoard = [...savedScoreBoard];
+let customGrids = [...savedCustomMaps];
 const GAME_INFO = document.querySelector("#gameInfo");
 const easyGrid =
     [
@@ -60,6 +64,8 @@ const hardGrid =
     ]
 
 
+
+
 let currentGrid;
 let currentContainer;
 
@@ -69,8 +75,24 @@ let timeElapsed;
 let numLamps = 0;
 let isPaused = false;
 let isScore = false;
+let isCustom = false;
 
-function saveGameData(playerName, level, timeElapsed) {
+function saveGameData() {
+    let customData = {
+        "playerName": playerName,
+        "map": ""
+    }
+
+    customData["map"] = currentGrid;
+
+    customGrids.push(gameData);
+
+
+    localStorage.setItem("scoreBoard", JSON.stringify(customData));
+}
+
+function saveCustomMap()
+{
     let gameData = {
         "playerName": playerName,
         "level": level,
@@ -205,7 +227,7 @@ function updateAfterSolved() {
     if (currentGrid == hardGrid) level = "Hard";
     //if (currentGrid == customGrid) level = "Custom Difficulty";
 
-    saveGameData(playerName, level, timeElapsed);
+    saveGameData();
 
     let buttonRestart = document.createElement("button");
     buttonRestart.id = "restart_btn";
@@ -329,7 +351,6 @@ buttonStart.addEventListener("click", (e) => {
             divStartPage.style.display = "none";
             divCustomGridPage.style.display = "flex";
             createCustomGrid();
-            loadPlayPage();
         }
     }
     else {
@@ -387,6 +408,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     divScoreBoard.appendChild(table);
+
+
+/////custom grid side
+
+    let form = document.createElement("form");
+    
+
+    for (let i = 0; i < customGrids.length;i++)
+    {
+        
+    }
+
+
 })
 
 function getElapsedTime(startTime) {
@@ -677,12 +711,28 @@ function reColor() {
 score_btn.addEventListener("click", () => {
     if (!isScore) {
         divScoreBoard.style.display = "block";
+        divCustomMaps.style.display = "none";
         IMG.style.display = "none";
         isScore = true;
     } else {
         divScoreBoard.style.display = "none";
+        divCustomMaps.style.display = "none";
         IMG.style.display = "block";
         isScore = false;
+    }
+})
+
+custom_btn.addEventListener("click", () => {
+    if (!isCustom) {
+        divCustomMaps.style.display = "block";
+        divScoreBoard.style.display = "none";
+        IMG.style.display = "none";
+        isCustom = true;
+    } else {
+        divScoreBoard.style.display = "none";
+        divCustomMaps.style.display = "none";
+        IMG.style.display = "block";
+        isCustom = false;
     }
 })
 
@@ -706,12 +756,12 @@ function createCustomGrid() {
         //assigning currentGrid array
         currentGrid = customGrid;
 
-        let divCustomGrid = document.createElement("div");
+        divCustomGrid = document.createElement("div");
         divCustomGrid.style.display = "flex";
         divCustomGrid = document.createElement("div");
         divCustomGrid.id = "divCustomGrid";
         divEditCustomGrid.appendChild(divCustomGrid);
-        
+
 
         for (let i = 0; i < elements.length; i++) {
             let element = elements[i];
@@ -725,17 +775,16 @@ function createCustomGrid() {
         changeElement();
     })
 
-    buttonSetGrid.addEventListener("click", () => {
+    buttonSetGrid.addEventListener("click", (e) => {
+        e.preventDefault();
         divCustomGridPage.style.display = "none";
         divPlayPage.style.display = "flex";
-        let readyGrid = customGrid;
-        currentGrid = readyGrid;
+        currentGrid = customGrid;
+        currentContainer = gridContainer;
+        divCustomGrid.remove();
 
-        console.log(gridContainer);
-
-        currentContainer.children().forEach(child => {
-            gridContainer.appendChild(child);
-        })
+        customGrids.push(customGrid);
+        loadPlayPage();
 
         console.log(gridContainer);
     })
@@ -743,40 +792,46 @@ function createCustomGrid() {
 
 function changeElement() {
     const cells = document.querySelectorAll('.cell');
-    console.log("container: ", currentContainer);
     cells.forEach((cell) => {
-        cell.addEventListener("click", () => {
+        let cellReference = parseInt(cell.id);
+        let cellIndexJ = cellReference % 10;
+        let cellIndexI = (cellReference - cellReference % 10) / 10;
+        cell.addEventListener("click", function clickElement() {
             if (choosenElement.dataset.type === "stone") {
                 cell.style.backgroundColor = "black";
                 cell.dataset.type = "stone";
-                console.log("HERE");
+                customGrid[cellIndexI][cellIndexJ] = "+";
             }
             else if (choosenElement.dataset.type === "number0") {
                 cell.style.backgroundColor = "black";
                 cell.dataset.type = "number";
                 cell.innerHTML = "0";
+                customGrid[cellIndexI][cellIndexJ] = "0";
             }
             else if (choosenElement.dataset.type === "number1") {
                 cell.style.backgroundColor = "black";
                 cell.dataset.type = "number";
                 cell.innerHTML = "1";
+                customGrid[cellIndexI][cellIndexJ] = "1";
             }
             else if (choosenElement.dataset.type === "number2") {
                 cell.style.backgroundColor = "black";
                 cell.dataset.type = "number";
                 cell.innerHTML = "2";
+                customGrid[cellIndexI][cellIndexJ] = "2";
             }
             else if (choosenElement.dataset.type === "number3") {
                 cell.style.backgroundColor = "black";
                 cell.dataset.type = "number";
                 cell.innerHTML = "3";
+                customGrid[cellIndexI][cellIndexJ] = "3";
             }
             else if (choosenElement.dataset.type === "empty") {
                 cell.style.backgroundColor = "white";
                 cell.dataset.type = "blank";
                 cell.innerHTML = "";
+                customGrid[cellIndexI][cellIndexJ] = "";
             }
         })
     })
-
 }

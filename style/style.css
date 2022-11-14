@@ -134,7 +134,24 @@ input[type='radio']:checked:after {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.842);
     color: aliceblue;
+}
 
+.custom_maps{
+    width: fit-content;
+    padding: 0.5em;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.842);
+    color: aliceblue;
+}
+
+#divCustomMaps{
+    display: none;
+    height: 440px;
+    overflow: scroll;
+}
+
+#divCustomMaps::-webkit-scrollbar {
+    display: none;
 }
 
 #divScoreBoard{

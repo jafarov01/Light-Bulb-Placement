@@ -16,17 +16,20 @@ const h3NumLumps = document.querySelector("#h3NumLumps");
 const h1WinMessage = document.querySelector("#h1WinMessage");
 const divScoreBoard = document.querySelector("#divScoreBoard");
 const puzzle_error = new Audio('./sounds/sound.mp3');
-const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
-const savedCustomMaps = JSON.parse(localStorage.getItem("savedMaps")) ?? [];
 const score_btn = document.querySelector(".score_board");
 const custom_btn = document.querySelector(".custom_maps");
 const IMG = document.querySelector("#imgStartPage");
 const divChangeDifficulty = document.querySelector("#divChangeDifficulty");
 const buttonChangeDiffStart = document.querySelector("#buttonChangeDiffStart");
 const divCustomMaps = document.querySelector("#divCustomMaps");
+
+const savedScoreBoard = JSON.parse(localStorage.getItem("scoreBoard")) ?? [];
+const savedCustomMaps = JSON.parse(localStorage.getItem("savedMaps")) ?? [];
 let scoreBoard = [...savedScoreBoard];
 let customGrids = [...savedCustomMaps];
+
 const GAME_INFO = document.querySelector("#gameInfo");
+
 const easyGrid =
     [
         ["", "", "", "1", "", "", ""],
@@ -76,28 +79,24 @@ let numLamps = 0;
 let isPaused = false;
 let isScore = false;
 let isCustom = false;
+let level;
 
-function saveGameData() {
+function saveCustomMap() {
     let customData = {
         "playerName": playerName,
-        "map": ""
+        "map": currentGrid
     }
 
-    customData["map"] = currentGrid;
-
-    customGrids.push(gameData);
+    customGrids.push(customData);
 
 
-    localStorage.setItem("scoreBoard", JSON.stringify(customData));
+    localStorage.setItem("savedMaps", JSON.stringify(customGrids));
 }
-
-function saveCustomMap()
-{
+function saveGameData() {
     let gameData = {
         "playerName": playerName,
         "level": level,
         "timeElapsed": timeElapsed
-
     }
 
     let update = false;
@@ -220,11 +219,10 @@ function updateAfterSolved() {
     isPaused = true;
     h1WinMessage.innerHTML = "SOLVED!";
 
-    let level;
-
     if (currentGrid == easyGrid) level = "Easy";
-    if (currentGrid == mediumGrid) level = "Medium";
-    if (currentGrid == hardGrid) level = "Hard";
+    else if (currentGrid == mediumGrid) level = "Medium";
+    else if (currentGrid == hardGrid) level = "Hard";
+    else level = "Custom";
     //if (currentGrid == customGrid) level = "Custom Difficulty";
 
     saveGameData();
@@ -410,17 +408,41 @@ document.addEventListener("DOMContentLoaded", () => {
     divScoreBoard.appendChild(table);
 
 
-/////custom grid side
+    /////custom grid side
 
-    let form = document.createElement("form");
-    
+    console.log("custom maps: ", customGrids);
 
-    for (let i = 0; i < customGrids.length;i++)
-    {
-        
+    for (let i = 0; i < customGrids.length; i++) {
+        let divCustomMap = document.createElement("button");
+
+        divCustomMap.className = "customMap";
+        divCustomMap.id = i;
+
+        let h3Name = document.createElement("h3");
+        h3Name.innerHTML = `Creater: ${customGrids[i].playerName}`;
+
+        let h3Map = document.createElement("h3");
+        h3Map.innerHTML = `Map: Custom${i + 1}`;
+
+
+        divCustomMap.appendChild(h3Name);
+        divCustomMap.appendChild(h3Name);
+
+        divCustomMaps.appendChild(divCustomMap);
     }
 
 
+    //choose custom
+    document.querySelectorAll(".customMap").forEach(iteratedMap=> {
+        iteratedMap.addEventListener("click", () => {
+            divStartPage.style.display = "none";
+            // console.log("mapin ozu: ", iteratedMap.map);
+            currentGrid = customGrids[parseInt(iteratedMap.id)].map;
+            currentContainer = gridContainer;
+            loadPlayPage();
+
+        })
+    })
 })
 
 function getElapsedTime(startTime) {
@@ -461,8 +483,6 @@ function getElapsedTime(startTime) {
 
 function renderBoard() {
     currentContainer.style.gridTemplateRows = `repeat(${currentGrid.length},1fr)`;
-    console.log("currentGrid.length: ", currentGrid.length);
-    console.log("container: ", currentContainer);
     for (let i = 0; i < currentGrid.length; i++) {
         var row = document.createElement("div");
 
@@ -777,16 +797,20 @@ function createCustomGrid() {
 
     buttonSetGrid.addEventListener("click", (e) => {
         e.preventDefault();
-        divCustomGridPage.style.display = "none";
-        divPlayPage.style.display = "flex";
-        currentGrid = customGrid;
-        currentContainer = gridContainer;
-        divCustomGrid.remove();
+        if (customGrid.length !== 0) {
+            divCustomGridPage.style.display = "none";
+            divPlayPage.style.display = "flex";
+            currentGrid = customGrid;
+            currentContainer = gridContainer;
+            divCustomGrid.remove();
 
-        customGrids.push(customGrid);
-        loadPlayPage();
+            console.log("customGrid: ", customGrid);
 
-        console.log(gridContainer);
+            saveCustomMap();
+            loadPlayPage();
+
+            console.log(gridContainer);
+        }
     })
 }
 

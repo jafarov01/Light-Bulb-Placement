@@ -144,6 +144,15 @@ input[type='radio']:checked:after {
     color: aliceblue;
 }
 
+.customMap{
+    display: block;
+    margin: 5px 0;
+    background-color: rgb(180, 180, 13);
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+}
+
 #divCustomMaps{
     display: none;
     height: 440px;
@@ -176,6 +185,8 @@ input[type='radio']:checked:after {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
 }
+
+
 
 .lamp {
     width: 60px;
@@ -274,6 +285,7 @@ input[type='radio']:checked:after {
     align-items: center;
     justify-content: center;
     color:white;
+    cursor: pointer;
 }
 
 .cell-hover {
@@ -326,5 +338,4 @@ td{
     padding: 5px 0;
     height: 90px;
     cursor: pointer;
-
 }

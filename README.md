@@ -1,6 +1,8 @@
 # Light-bulb-placement
 Light bulb placement Game - JavaScript Web Application
 
+# Link to the application: https://light-bulb-placement.vercel.app/
+
 Once upon a time, King Unnamed of Nowhereland was both smiling and crying at the same time. He was smiling because his enormous brand-new palace with many spacious rooms and corridors has just been finished. He is also crying as these rooms need to be illuminated and kept warm, but the ongoing increase of utility costs affect him as well. So now it's time to think about the placement of the palace's light bulbs. We need to place them so that everything is properly lit, but we cannot install any unnecessary bulbs.
 
 ## Game description

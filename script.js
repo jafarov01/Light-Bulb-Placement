@@ -439,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // console.log("mapin ozu: ", iteratedMap.map);
             currentGrid = customGrids[parseInt(iteratedMap.id)].map;
             currentContainer = gridContainer;
+            playerName = customGrids[parseInt(iteratedMap.id)].playerName;
             loadPlayPage();
 
         })
